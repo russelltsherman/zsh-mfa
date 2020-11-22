@@ -6,13 +6,13 @@ __mfa() {
 	profile="${1}"
 	file="${XDG_CONFIG_HOME}/mfa/${profile}.mfa"
 
-  if [ -f "$file" ]
-  then
+	if [ -f "$file" ]
+	then
 		code="$(oathtool --base32 --totp "$(cat "$file")")"
-    echo "$code" # output the code to screen
-    echo "$code" | pbcopy # push code into system clipboard
+		echo "$code" # output the code to screen
+		echo "$code" | pbcopy # push code into system clipboard
 	elif [ -z "$profile" ]
-  then
+	then
 		echo "No MFA profile defined" >&2
 	else
 		echo "No MFA profile for $profile" >&2

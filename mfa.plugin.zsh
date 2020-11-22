@@ -1,4 +1,2 @@
-#!/usr/bin/env bash
-
-DIR="$( cd "$( dirname $0:A )" && pwd )"
-export PATH=$DIR/bin:$PATH
+0=${(%):-%N}
+source ${0:A:h}/mfa.zsh
