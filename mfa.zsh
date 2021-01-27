@@ -28,9 +28,9 @@ else
         brew install oath-toolkit
     fi
 
-    if chk::linux
+    if chk::debian || chk::ubuntu
     then
-        apt-get install oath-toolkit
+        sudo apt-get install -y oathtool
     fi
   }
 fi
