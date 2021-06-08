@@ -10,7 +10,18 @@ then
         then
             code="$(oathtool --base32 --totp "$(cat "$file")")"
             echo "$code" # output the code to screen
-            echo "$code" | pbcopy # push code into system clipboard
+
+            # push code into system clipboard
+            if chk::osx
+            then
+                echo "$code" | pbcopy 
+            fi
+
+            if chk::debian || chk::ubuntu
+            then
+                echo "$code" | xclip -selection c 
+            fi
+
         elif [ -z "$profile" ]
         then
             echo "No MFA profile defined" >&2
