@@ -11,15 +11,18 @@ then
             code="$(oathtool --base32 --totp "$(cat "$file")")"
             echo "$code" # output the code to screen
 
-            # push code into system clipboard
-            if chk::osx
-            then
-                echo "$code" | pbcopy 
-            fi
+            # push code into system clipboard if tty
+            if [ -t 1 ] 
+            then 
+                if chk::osx
+                then
+                    echo "$code" | pbcopy 
+                fi
 
-            if chk::debian || chk::ubuntu
-            then
-                echo "$code" | xclip -selection c 
+                if chk::debian || chk::ubuntu
+                then
+                    echo "$code" | xclip -selection c 
+                fi
             fi
 
         elif [ -z "$profile" ]
