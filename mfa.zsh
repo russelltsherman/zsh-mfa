@@ -31,11 +31,11 @@ then
         then
             if chk::command "fzf"
             then 
-              selected=$(ls ${XDG_CONFIG_HOME}/mfa/ | sed -e 's/\.mfa$//' | fzf)
-              mfa $selected
+                selected=$(find ${XDG_CONFIG_HOME}/mfa/ -iname \*.mfa -maxdepth 1 -exec basename {} \; | sed -e 's/\.mfa$//' | fzf)
+                mfa $selected
             else
-              echo "No MFA profile specified\n" >&2
-              ls ${XDG_CONFIG_HOME}/mfa/ | sed -e 's/\.mfa$//'
+                echo "No MFA profile specified\n" >&2
+                ls ${XDG_CONFIG_HOME}/mfa/ | sed -e 's/\.mfa$//'
             fi
         else
             echo "No MFA profile for $profile" >&2
