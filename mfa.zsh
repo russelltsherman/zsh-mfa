@@ -1,4 +1,3 @@
-
 if chk::command "oathtool"
 then
 
@@ -9,25 +8,35 @@ then
         if [ -f "$file" ]
         then
             code="$(oathtool --base32 --totp "$(cat "$file")")"
-            echo "$code" # output the code to screen
 
             # push code into system clipboard if tty
             if [ -t 1 ] 
             then 
                 if chk::osx
                 then
+                    echo "mfa code has been generated and pushed to system clipboard" >&2
                     echo "$code" | pbcopy 
                 fi
 
                 if chk::debian || chk::ubuntu
                 then
+                    echo "mfa code has been generated and pushed to system clipboard" >&2
                     echo "$code" | xclip -selection c 
                 fi
+            else
+                echo $code
             fi
 
         elif [ -z "$profile" ]
         then
-            echo "No MFA profile defined" >&2
+            if chk::command "fzf"
+            then 
+              selected=$(ls ${XDG_CONFIG_HOME}/mfa/ | sed -e 's/\.mfa$//' | fzf)
+              mfa $selected
+            else
+              echo "No MFA profile specified\n" >&2
+              ls ${XDG_CONFIG_HOME}/mfa/ | sed -e 's/\.mfa$//'
+            fi
         else
             echo "No MFA profile for $profile" >&2
         fi
